@@ -1,0 +1,50 @@
+<%var localContext = {landloard : tenant.realm.isCompany ? tenant.realm.company : tenant.realm.manager}-%>
+<%=localContext.landloard%>
+<%=tenant.realm.street1%>
+<%if (tenant.realm.street2) {-%>
+<%=tenant.realm.street2%>
+<%}-%>
+<%=tenant.realm.zipCode%> <%=tenant.realm.city%>
+
+
+
+                                              <%=tenant.name%>
+                                              <%=tenant.street1%>
+<%if (tenant.street2) {-%>
+                                              <%=tenant.street2%>
+<%}-%>
+                                              <%=tenant.zipCode%> <%=tenant.city%>
+
+
+
+Bonjour,
+
+Je vous prie de bien vouloir trouver ci-joint votre avis d'échéance pour la periode de <%= period %>.
+
+Le montant de votre loyer est de <%= tenant.rents[0].total.grandTotal.toFixed(2) %> euros à nous faire parvenir avant le <%= dueDate %>.
+
+Ci-dessous les modalités de paiement :
+
+Par chèque bancaire ou postal
+Etablissez votre chèque à l'ordre de <%=localContext.landloard%> et à envoyer à l'adresse suivante :
+<%=localContext.landloard%>
+<%=tenant.realm.street1%>
+<%if (tenant.realm.street2)%><%=tenant.realm.street2%>
+<%=tenant.realm.zipCode%> <%=tenant.realm.city%>
+  ­
+Par virement bancaire
+Nos coordonnées bancaires
+Banque populaire IBAN : <%=tenant.realm.rib%>
+
+Par espèce
+Contactez <%=tenant.realm.contact%>
+Par téléphone au <%=tenant.realm.phone1%><%if (tenant.realm.phone2)%> ou au <%=tenant.realm.phone2%>
+Par E-mail à <%=tenant.realm.email%>
+
+Nous restons à votre disposition pour tout complément d'information.
+
+Bien Cordialement,
+
+<%=localContext.landloard%>
+<%=tenant.realm.phone1%><%if (tenant.realm.phone2)%> / <%=tenant.realm.phone2%>
+<%=tenant.realm.email%>

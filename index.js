@@ -107,9 +107,10 @@ process.on('SIGINT', async () => {
             });
         logger.debug(`Rest API listening on port ${http_port}`);
         logger.debug('Rest API ready');
-        logger.info(`Databases ${config.PREHEATING_DB_URL} / ${config.DB_URL}`);
-        logger.info(`MailGun domain ${config.MAILGUN.domain}`);
+        logger.info(`NODE_ENV ${process.env.NODE_ENV}`);
         logger.info(`Mode productive ${config.PRODUCTIVE}`);
+        logger.info(`Databases ${config.BASE_DB_URL} / ${config.DB_URL}`);
+        logger.info(`MailGun domain ${config.MAILGUN.domain}`);
         logger.info('Emailer ready');
     } catch (exc) {
         logger.error(exc.message);

@@ -6,19 +6,19 @@ const logger = require('winston');
 const config = require('../lib/config');
 const Emails = require('./model/emails');
 
-let client, connection, db_preheating;
+let client, connection, base_db;
 
 process.on('SIGINT', async () => {
     exit();
 });
 
 async function start() {
-    await start_preheating_db();
+    await start_base_db();
     await start_db();
 }
 
 async function exit() {
-    await exit_preheating_db();
+    await exit_base_db();
     await exit_db();
 }
 
@@ -39,27 +39,27 @@ async function exit_db() {
     }
 }
 
-async function start_preheating_db() {
+async function start_base_db() {
     if (!client) {
-        logger.debug(`db connecting ${config.PREHEATING_DB_URL}...`);
-        const db_preheating_url = new URL(config.PREHEATING_DB_URL);
-        const db_preheating_name = db_preheating_url.pathname.slice(1);
-        let origin = db_preheating_url.origin;
+        logger.debug(`db connecting ${config.BASE_DB_URL}...`);
+        const base_db_url = new URL(config.BASE_DB_URL);
+        const base_db_name = base_db_url.pathname.slice(1);
+        let origin = base_db_url.origin;
         if (origin == 'null') {
-            origin = `${db_preheating_url.protocol}//${db_preheating_url.hostname}${db_preheating_url.port?`:${db_preheating_url.port}`:''}`;
+            origin = `${base_db_url.protocol}//${base_db_url.hostname}${base_db_url.port?`:${base_db_url.port}`:''}`;
         }
 
         client = await MongoClient.connect(origin);
-        db_preheating = await client.db(db_preheating_name);
+        base_db = await client.db(base_db_name);
         logger.debug('db ready');
     }
 }
 
 async function getTenant(id, term) {
-    const tenant = await db_preheating.collection('occupants').findOne({_id: ObjectID(id)});
+    const tenant = await base_db.collection('occupants').findOne({_id: ObjectID(id)});
     if (tenant) {
         tenant.rents = tenant.rents.filter(rent => rent.term === Number(term));
-        const realms = await db_preheating.collection('realms').find().toArray();
+        const realms = await base_db.collection('realms').find().toArray();
         tenant.realm = realms.filter(realm => realm._id.toString() === tenant.realmId)[0];
     }
     return tenant;
@@ -88,7 +88,7 @@ function insertEmailStatus(status) {
     new Emails(status).save();
 }
 
-async function exit_preheating_db() {
+async function exit_base_db() {
     logger.debug('db exiting...');
     if (client) {
         await client.close();

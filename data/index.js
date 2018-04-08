@@ -81,7 +81,7 @@ async function getEmailStatus(id, term) {
             document: true,
             to: true,
             sentDate: true
-        });
+        }, {sort: {sentDate: -1}});
 }
 
 function insertEmailStatus(status) {

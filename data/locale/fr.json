@@ -1,6 +1,7 @@
 {
     "short_invoice": "Q",
     "short_rentcall": "A",
+    "short_rentcall_reminder": "A",
     "invoice": "Quittance",
     "rentcall": "Avis d'échéance"
 }

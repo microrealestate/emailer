@@ -78,7 +78,7 @@ process.on('SIGINT', async () => {
     });
 
     // body = {
-    //     document,  // invoice, rentcall
+    //     document,  // invoice, rentcall, rentcall-reminder
     //     id,        // tenant Id
     //     term       // YYYYMMDDHH (ex. 2018030100)
     // }

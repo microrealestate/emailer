@@ -5,10 +5,10 @@ RUN npm set progress=false && \
 COPY . .
 
 FROM base as dependencies
-RUN npm install --only=production
+RUN npm install
 
 FROM base AS release
 RUN npm install forever -g
 COPY --from=dependencies /usr/app .
 EXPOSE 8083
-CMD NODE_ENV=production forever ./index.js
+CMD forever ./index.js

@@ -1,7 +1,6 @@
-.git
-.gitignore
-.vscode
-lib-cov
-coverage
-**/node_modules
-tmp
+!data
+!lib
+!templates
+!index.js
+!package-lock.json
+!package.json

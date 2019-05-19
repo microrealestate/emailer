@@ -1,50 +1,50 @@
 <%var localContext = {landloard : tenant.realm.isCompany ? tenant.realm.company : tenant.realm.manager}-%>
-<%=localContext.landloard%>
-<%=tenant.realm.street1%>
+<%-localContext.landloard%>
+<%-tenant.realm.street1%>
 <%if (tenant.realm.street2) {-%>
-<%=tenant.realm.street2%>
+<%-tenant.realm.street2%>
 <%}-%>
-<%=tenant.realm.zipCode%> <%=tenant.realm.city%>
+<%-tenant.realm.zipCode%> <%-tenant.realm.city%>
 
 
 
-                                              <%=tenant.name%>
-                                              <%=tenant.street1%>
+                                              <%-tenant.name%>
+                                              <%-tenant.street1%>
 <%if (tenant.street2) {-%>
-                                              <%=tenant.street2%>
+                                              <%-tenant.street2%>
 <%}-%>
-                                              <%=tenant.zipCode%> <%=tenant.city%>
+                                              <%-tenant.zipCode%> <%-tenant.city%>
 
 
 
 Bonjour,
 
-Sauf erreur de notre part, nous vous informons que nous sommes toujours en attente du règlement de votre loyer du mois de <%= period %>.
+Sauf erreur de notre part, nous vous informons que nous sommes toujours en attente du règlement de votre loyer du mois de <%- period %>.
 
-Nous vous remercions de bien vouloir procéder au paiement de la somme de <%= tenant.rents[0].total.grandTotal.toFixed(2) %> euros dans les plus brefs delais.
+Nous vous remercions de bien vouloir procéder au paiement de la somme de <%- tenant.rents[0].total.grandTotal.toFixed(2) %> euros dans les plus brefs delais.
 
 Ci-dessous les modalités de paiement :
 
 Par virement bancaire
 Nos coordonnées bancaires
-Banque populaire IBAN : <%=tenant.realm.rib%>
+Banque populaire IBAN : <%-tenant.realm.rib%>
 
 Par chèque bancaire ou postal
-Etablissez votre chèque à l'ordre de <%=localContext.landloard%> et à envoyer à l'adresse suivante :
-<%=localContext.landloard%>
-<%=tenant.realm.street1%>
-<%if (tenant.realm.street2)%><%=tenant.realm.street2%>
-<%=tenant.realm.zipCode%> <%=tenant.realm.city%>
+Etablissez votre chèque à l'ordre de <%-localContext.landloard%> et à envoyer à l'adresse suivante :
+<%-localContext.landloard%>
+<%-tenant.realm.street1%>
+<%if (tenant.realm.street2)%><%-tenant.realm.street2%>
+<%-tenant.realm.zipCode%> <%-tenant.realm.city%>
 
 Par espèce
-Contactez <%=tenant.realm.contact%>
-Par téléphone au <%=tenant.realm.phone1%><%if (tenant.realm.phone2)%> ou au <%=tenant.realm.phone2%>
-Par E-mail à <%=tenant.realm.email%>
+Contactez <%-tenant.realm.contact%>
+Par téléphone au <%-tenant.realm.phone1%><%if (tenant.realm.phone2)%> ou au <%-tenant.realm.phone2%>
+Par E-mail à <%-tenant.realm.email%>
 
 Nous restons à votre disposition pour tout complément d'information.
 
 Bien Cordialement,
 
-<%=localContext.landloard%>
-<%=tenant.realm.phone1%><%if (tenant.realm.phone2)%> / <%=tenant.realm.phone2%>
-<%=tenant.realm.email%>
+<%-localContext.landloard%>
+<%-tenant.realm.phone1%><%if (tenant.realm.phone2)%> / <%-tenant.realm.phone2%>
+<%-tenant.realm.email%>

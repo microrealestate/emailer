@@ -17,11 +17,15 @@
 
 
 
-Bonjour,
+Madame, Monsieur,
 
-Je vous prie de bien vouloir trouver ci-joint votre avis d'échéance pour la periode de <%- period %>.
+Nous vous rappelons que nos relations commerciales avec votre société sont liées par un bail signé le <%- tenant.beginDate %>.
 
-Le montant de votre loyer est de <%- tenant.rents[0].total.grandTotal.toFixed(2) %> euros à nous faire parvenir avant le <%- dueDate %>.
+Dans ce bail, il est explicitement indiqué que <%- tenant.name %> s'oblige à payer d'avance, la location d'un ou plusieurs bureaux, à la société <%- tenant.realm.legalForm + ' ' + localContext.landloard %>, tous les mois, le premier jour de chaque mois (chapitre Loyers - article II)
+
+Or, à ce jour, un ou plusieurs loyers n'ont pas été réglés représentant un montant de <%- tenant.rents[0].total.grandTotal.toFixed(2) %> euros.
+
+Nous vous remercions de bien vouloir procéder au paiement de vos loyers dans les 10 jours suivants cet email sous peine de demande de recouvrement par un huissier de justice.
 
 Ci-dessous les modalités de paiement :
 

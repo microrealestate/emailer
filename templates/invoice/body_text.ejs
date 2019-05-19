@@ -1,19 +1,19 @@
 <%var localContext = {landloard : tenant.realm.isCompany ? tenant.realm.company : tenant.realm.manager}-%>
-<%=localContext.landloard%>
-<%=tenant.realm.street1%>
+<%-localContext.landloard%>
+<%-tenant.realm.street1%>
 <%if (tenant.realm.street2) {-%>
-<%=tenant.realm.street2%>
+<%-tenant.realm.street2%>
 <%}-%>
-<%=tenant.realm.zipCode%> <%=tenant.realm.city%>
+<%-tenant.realm.zipCode%> <%-tenant.realm.city%>
 
 
 
-                                              <%=tenant.name%>
-                                              <%=tenant.street1%>
+                                              <%-tenant.name%>
+                                              <%-tenant.street1%>
 <%if (tenant.street2) {-%>
-                                              <%=tenant.street2%>
+                                              <%-tenant.street2%>
 <%}-%>
-                                              <%=tenant.zipCode%> <%=tenant.city%>
+                                              <%-tenant.zipCode%> <%-tenant.city%>
 
 
 
@@ -21,12 +21,12 @@ Bonjour,
 
 Nous vous remercions pour le règlement de votre loyer.
 
-Veuillez trouver ci-joint la quittance du mois de <%= period %>.
+Veuillez trouver ci-joint la quittance du mois de <%- period %>.
 
 En vous souhaitant bonne récéption.
 
 Bien Cordialement,
 
-<%=localContext.landloard%>
-<%=tenant.realm.phone1%><%if (tenant.realm.phone2)%> / <%=tenant.realm.phone2%>
-<%=tenant.realm.email%>
+<%-localContext.landloard%>
+<%-tenant.realm.phone1%><%if (tenant.realm.phone2)%> / <%-tenant.realm.phone2%>
+<%-tenant.realm.email%>

@@ -1,4 +1,4 @@
-FROM node:8-alpine AS base
+FROM node:12-slim AS base
 WORKDIR /usr/app
 RUN npm set progress=false && \
     npm config set depth 0

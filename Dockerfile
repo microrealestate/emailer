@@ -1,4 +1,8 @@
 FROM node:12-slim AS base
+
+RUN apt-get update \
+    && apt-get install -y wget gnupg
+
 WORKDIR /usr/app
 RUN npm set progress=false && \
     npm config set depth 0
@@ -10,5 +14,4 @@ RUN npm install --silent --only=production
 FROM base AS release
 RUN npm install forever -g --silent
 COPY --from=dependencies /usr/app .
-EXPOSE 8083
 CMD forever ./index.js

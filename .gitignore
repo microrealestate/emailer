@@ -1,2 +1,5 @@
 node_modules/
 tmp/
+
+# Rest client vscode plugin
+*.rest

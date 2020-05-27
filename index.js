@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const expressWinston = require('express-winston');
 const logger = require('winston');
 const config = require('./lib/config');
+const db = require('./lib/model');
 const emailer = require('./lib/emailer');
 
 process.on('SIGINT', async () => {
@@ -17,11 +18,6 @@ process.on('SIGINT', async () => {
         level: config.LOGGER_LEVEL,
         colorize: true
     });
-
-    if (!fs.existsSync(config.TEMPLATES_DIRECTORY)) {
-        logger.error(`no email templates found in ${config.TEMPLATES_DIRECTORY}`);
-        process.exit(1);
-    }
 
     if (!fs.existsSync(config.TEMPORARY_DIRECTORY)) {
         fs.mkdirSync(config.TEMPORARY_DIRECTORY);
@@ -62,39 +58,51 @@ process.on('SIGINT', async () => {
     // parse application/json
     app.use(bodyParser.json());
 
-    //     id,        // tenant Id
-    //     term       // YYYYMMDDHH (ex. 2018030100)
-    app.get('/emailer/status/:id?/:term', async (req, res) => {
+    //     recordId,      // DB record Id or Token
+    //     params         // extra parameters (ex. { term: 2018030100 })
+    app.get('/emailer/status/:recordId?/:term', async (req, res) => {
         try {
-            const result = await emailer.status(
-                req.params.id,
-                req.params.term
-            );
+            const { recordId, ...params } = req.params;
+            const result = await emailer.status(recordId, params);
             res.json(result);
         } catch(exc) {
-            res.status(500).send(exc);
             logger.error(exc);
+            res.status(500).send({
+                status: 500,
+                message: exc.message
+            });
         }
     });
 
     // body = {
-    //     document,  // invoice, rentcall, rentcall-reminder
-    //     id,        // tenant Id
-    //     term       // YYYYMMDDHH (ex. 2018030100)
+    //     templateName,  // email template name (invoice, rentcall, rentcall-reminder...)
+    //     recordId,      // DB record Id or Token
+    //     params         // extra parameters (ex. { term: 2018030100 })
     // }
     app.post('/emailer', async (req, res) => {
         try {
-            res.json(await emailer.send(
-                req.body.document,
-                req.body.id,
-                req.body.term
-            ));
+            const { templateName, recordId, params } = req.body;
+            const results = await emailer.send(
+                templateName,
+                recordId,
+                params
+            );
+
+            if (!results || !results.length) {
+                return res.sendStatus(404);
+            }
+
+            if (results.length === 1 && results[0].error) {
+                return res.status(results[0].error.status).json(results[0].error);
+            }
+
+            res.json(results);
         } catch(exc) {
-            const result = Object.assign({}, req.body);
-            result.error = exc.message;
-            res.status(500).send([result]);
-            logger.error(result);
             logger.error(exc);
+            res.status(500).json({
+                status: 500,
+                message: exc.message
+            });
         }
     });
 
@@ -105,6 +113,8 @@ process.on('SIGINT', async () => {
             .on('error', (error) => {
                 throw new Error(error);
             });
+        await db.start();
+        await db.migrate();
         logger.debug(`Rest API listening on port ${http_port}`);
         logger.debug('Rest API ready');
         logger.info(`NODE_ENV ${process.env.NODE_ENV}`);

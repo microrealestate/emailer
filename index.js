@@ -82,6 +82,16 @@ process.on('SIGINT', async () => {
     app.post('/emailer', async (req, res) => {
         try {
             const { templateName, recordId, params } = req.body;
+
+            if (![
+                'invoice',
+                'rentcall',
+                'rentcall_last_reminder',
+                'rentcall_reminder'
+            ].includes(templateName)) {
+                return res.sendStatus(404);
+            }
+
             const results = await emailer.send(
                 templateName,
                 recordId,

@@ -58,6 +58,12 @@ process.on('SIGINT', async () => {
     // parse application/json
     app.use(bodyParser.json());
 
+    // parse locale
+    app.use((req, res, next) => {
+        req.locale = req.get('Application-Locale') || 'en-US';
+        next();
+    });
+
     //     recordId,      // DB record Id or Token
     //     params         // extra parameters (ex. { term: 2018030100 })
     app.get('/emailer/status/:recordId?/:term', async (req, res) => {
@@ -93,6 +99,7 @@ process.on('SIGINT', async () => {
             }
 
             const results = await emailer.send(
+                req.locale,
                 templateName,
                 recordId,
                 params

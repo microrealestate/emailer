@@ -136,7 +136,7 @@ process.on('SIGINT', async () => {
         logger.debug('Rest API ready');
         logger.info(`NODE_ENV ${process.env.NODE_ENV}`);
         logger.info(`Mode productive ${config.PRODUCTIVE}`);
-        logger.info(`Databases ${config.BASE_DB_URL} / ${config.DB_URL}`);
+        logger.info(`Databases ${config.MONGO_URL} / ${config.DEPRECATED_DB_URL}`);
         logger.info(`MailGun domain ${config.MAILGUN.domain}`);
         logger.info('Emailer ready');
     } catch (exc) {

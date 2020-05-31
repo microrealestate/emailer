@@ -60,7 +60,14 @@ process.on('SIGINT', async () => {
 
     // parse locale
     app.use((req, res, next) => {
-        req.locale = req.get('Application-Locale') || 'en-US';
+        const supportedLocales = ['en-US', 'fr-FR'];
+        const defaultLocale = 'en-US';
+
+        let locale = req.get('Application-Locale') || 'en-US';
+        if (!supportedLocales.includes(locale)) {
+            locale = defaultLocale;
+        }
+        req.locale = locale;
         next();
     });
 

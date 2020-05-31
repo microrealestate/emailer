@@ -11,7 +11,9 @@ This service is part of the MicroRealEstate application more [here](https://gith
 Request
 ```
 POST /emailer
-
+headers = {
+    'Application-Locale', // the application locale: en-US, fr-FR...
+}
 body = {
     templateName,  // email template name (invoice, rentcall, rentcall-reminder...)
     recordId,      // DB record Id or Token
@@ -38,10 +40,11 @@ Response
 
 Request
 ```
-GET /emailer/status/:recordId?/:params
-
-// recordId,      // DB record Id or Token
-// params         // extra parameters (ex. { term: 2018030100 })
+GET /emailer/status/:recordId?/:params      // recordId,     DB record Id
+                                            // params        extra parameters (ex. { term: 2018030100 })
+headers = {
+    'Application-Locale', // the application locale: en-US, fr-FR...
+}
 ```
 
 Response

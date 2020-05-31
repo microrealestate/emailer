@@ -64,7 +64,7 @@ process.on('SIGINT', async () => {
         next();
     });
 
-    //     recordId,      // DB record Id or Token
+    //     recordId,      // DB record Id
     //     params         // extra parameters (ex. { term: 2018030100 })
     app.get('/emailer/status/:recordId?/:term', async (req, res) => {
         try {
@@ -82,7 +82,7 @@ process.on('SIGINT', async () => {
 
     // body = {
     //     templateName,  // email template name (invoice, rentcall, rentcall-reminder...)
-    //     recordId,      // DB record Id or Token
+    //     recordId,      // DB record Id
     //     params         // extra parameters (ex. { term: 2018030100 })
     // }
     app.post('/emailer', async (req, res) => {

@@ -100,7 +100,8 @@ process.on('SIGINT', async () => {
                 'invoice',
                 'rentcall',
                 'rentcall_last_reminder',
-                'rentcall_reminder'
+                'rentcall_reminder',
+                'reset_password'
             ].includes(templateName)) {
                 return res.sendStatus(404);
             }

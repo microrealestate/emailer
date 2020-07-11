@@ -12,7 +12,7 @@ process.on('SIGINT', async () => {
 async function start() {
     if (!connection) {
         logger.debug(`db connecting to ${config.MONGO_URL}...`);
-        connection = await mongoose.connect(config.MONGO_URL);
+        connection = await mongoose.connect(config.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
         logger.debug('db ready');
     }
 }

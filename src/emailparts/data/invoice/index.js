@@ -16,6 +16,7 @@ module.exports = {
         const landlord = tenant.realmId;
         landlord.name = landlord.isCompany ? landlord.company : landlord.manager;
         landlord.collaborators = [
+            landlord.administrator,
             landlord.user1,
             landlord.user2,
             landlord.user3,
@@ -27,6 +28,7 @@ module.exports = {
             landlord.user9,
             landlord.user10
         ].filter(email => !!email).map(email => email.toLowerCase());
+        delete landlord.administrator;
         delete landlord.user1;
         delete landlord.user2;
         delete landlord.user3;

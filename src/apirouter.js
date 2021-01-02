@@ -1,24 +1,12 @@
 const express = require('express');
+const locale = require('locale');
 const logger = require('winston');
 const emailer = require('./emailer');
 
 const apiRouter = express.Router();
 
 // parse locale
-apiRouter.use((req, res, next) => {
-    const supportedLocales = ['en-US', 'fr-FR'].map(locale => locale.toLowerCase());
-    const defaultLocale = 'en-US';
-
-    let locale = req.get('Application-Locale') || 'en-US';
-    if (!supportedLocales.includes(locale.toLowerCase())) {
-        locale = defaultLocale;
-    } else {
-        const [lang, country] = locale.split('-');
-        locale = `${lang.toLowerCase()}-${country.toUpperCase()}`;
-    }
-    req.locale = locale;
-    next();
-});
+apiRouter.use(locale(['fr-FR', 'en-US', 'pt-BR'], 'en-US'));
 
 //     recordId,      // DB record Id
 //     params         // extra parameters (ex. { term: 2018030100 })

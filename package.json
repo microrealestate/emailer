@@ -28,6 +28,7 @@
     "ejs": "2.7.4",
     "express": "4.17.1",
     "express-winston": "2.6.0",
+    "locale": "0.1.0",
     "mailgun-js": "0.22.0",
     "moment": "2.24.0",
     "mongodb": "3.5.6",

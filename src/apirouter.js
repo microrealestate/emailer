@@ -44,7 +44,7 @@ apiRouter.post('/emailer', async (req, res) => {
         }
 
         const results = await emailer.send(
-            req.locale,
+            req.rawLocale.code,
             templateName,
             recordId,
             params

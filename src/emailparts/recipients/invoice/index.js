@@ -6,11 +6,11 @@ module.exports = {
             throw new Error('tenant has not any contact emails');
         }
 
-        if (!data.landlord.email) {
+        if (!data.landlord.contacts[0].email) {
             throw new Error('landlord has not defined any contact emails');
         }
 
-        const landlordEmail = data.landlord.email.toLowerCase();
+        const landlordEmail = data.landlord.contacts[0].email.toLowerCase();
 
         const recipientsList =  data.tenant.contacts
             .filter(contact => contact.email)
@@ -23,10 +23,13 @@ module.exports = {
                     to: email.toLowerCase(),
                     'h:Reply-To': landlordEmail
                 };
-                if (config.PRODUCTIVE && data.landlord.collaborators.length) {
+                if (config.PRODUCTIVE && data.landlord.members.length) {
                     recipients = {
                         ...recipients,
-                        bcc: data.landlord.collaborators.join(',')
+                        bcc: data.landlord.members
+                            .filter(({ email, registered }) => registered && email !== landlordEmail)
+                            .map(({ email }) => email)
+                            .join(',')
                     };
                 }
                 acc.push(recipients);

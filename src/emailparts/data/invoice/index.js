@@ -14,31 +14,7 @@ module.exports = {
 
         const tenant = dbTenant.toObject();
         const landlord = tenant.realmId;
-        landlord.name = landlord.isCompany ? landlord.company : landlord.manager;
-        landlord.collaborators = [
-            landlord.administrator,
-            landlord.user1,
-            landlord.user2,
-            landlord.user3,
-            landlord.user4,
-            landlord.user5,
-            landlord.user6,
-            landlord.user7,
-            landlord.user8,
-            landlord.user9,
-            landlord.user10
-        ].filter(email => !!email).map(email => email.toLowerCase());
-        delete landlord.administrator;
-        delete landlord.user1;
-        delete landlord.user2;
-        delete landlord.user3;
-        delete landlord.user4;
-        delete landlord.user5;
-        delete landlord.user6;
-        delete landlord.user7;
-        delete landlord.user8;
-        delete landlord.user9;
-        delete landlord.user10;
+        landlord.name = landlord.isCompany ? landlord.companyInfo.name : landlord.contacts[0].name;
         delete tenant.realmId;
 
         tenant.rents = tenant.rents.filter(rent => rent.term === Number(params.term));

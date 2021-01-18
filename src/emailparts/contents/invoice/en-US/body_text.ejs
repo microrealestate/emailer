@@ -1,10 +1,15 @@
 <%-landlord.name%>
-<%-landlord.street1%>
-<%if (landlord.street2) {-%>
-<%-landlord.street2%>
+<%-landlord.addresses[0].street1%>
+<%if (landlord.addresses[0].street2) {-%>
+<%-landlord.addresses[0].street2%>
 <%}-%>
-<%-landlord.zipCode%> <%-landlord.city%>
-
+<%-landlord.addresses[0].zipCode%> <%-landlord.addresses[0].city%>
+<%if (landlord.addresses[0].state) {-%>
+<%-landlord.addresses[0].state%>
+<%}-%>
+<%if (landlord.addresses[0].country) {-%>
+<%-landlord.addresses[0].country%>
+<%}-%>
 
 
                                               <%-tenant.name%>
@@ -25,5 +30,5 @@ Please find in attachment the rent receipt for <%- period %>.
 Regards,
 
 <%-landlord.name%>
-<%-landlord.phone1%><%if (landlord.phone2)%> / <%-landlord.phone2%>
-<%-landlord.email%>
+<%-landlord.contacts[0].phone1%><%if (landlord.contacts[0].phone2) {%> / <%-landlord.contacts[0].phone2%> <%}%>
+<%-landlord.contacts[0].email%>

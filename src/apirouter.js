@@ -43,12 +43,17 @@ apiRouter.post('/emailer', async (req, res) => {
             return res.sendStatus(404);
         }
 
-        const results = await emailer.send(
-            req.rawLocale.code,
-            templateName,
-            recordId,
-            params
-        );
+        let results = [];
+        try {
+            results = await emailer.send(
+                req.rawLocale.code,
+                templateName,
+                recordId,
+                params
+            );
+        } catch(error) {
+            return res.sendStatus(500);
+        }
 
         if (!results || !results.length) {
             return res.sendStatus(404);

@@ -1,10 +1,15 @@
 <%-landlord.name%>
-<%-landlord.street1%>
-<%if (landlord.street2) {-%>
-<%-landlord.street2%>
+<%-landlord.addresses[0].street1%>
+<%if (landlord.addresses[0].street2) {-%>
+<%-landlord.addresses[0].street2%>
 <%}-%>
-<%-landlord.zipCode%> <%-landlord.city%>
-
+<%-landlord.addresses[0].zipCode%> <%-landlord.addresses[0].city%>
+<%if (landlord.addresses[0].state) {-%>
+<%-landlord.addresses[0].state%>
+<%}-%>
+<%if (landlord.addresses[0].country) {-%>
+<%-landlord.addresses[0].country%>
+<%}-%>
 
 
                                               <%-tenant.name%>
@@ -30,27 +35,33 @@ Ci-dessous les modalités de paiement :
 
 Par virement bancaire
 Nos coordonnées bancaires
-<%- landlord.bank %>
-IBAN : <%-landlord.rib%>
+<%- landlord.bankInfo.name %>
+IBAN : <%-landlord.bankInfo.iban%>
 
 Par chèque bancaire ou postal
 Etablissez votre chèque à l'ordre de <%-landlord.name%> et à envoyer à l'adresse suivante :
 <%-landlord.name%>
-<%-landlord.street1%>
-<%if (landlord.street2) {-%>
-    <%-landlord.street2%>
+<%-landlord.addresses[0].street1%>
+<%if (landlord.addresses[0].street2) {-%>
+<%-landlord.addresses[0].street2%>
 <%}-%>
-<%-landlord.zipCode%> <%-landlord.city%>
+<%-landlord.addresses[0].zipCode%> <%-landlord.addresses[0].city%>
+<%if (landlord.addresses[0].state) {-%>
+<%-landlord.addresses[0].state%>
+<%}-%>
+<%if (landlord.addresses[0].country) {-%>
+<%-landlord.addresses[0].country%>
+<%}-%>
 
 Par espèce
-Contactez <%-landlord.contact%>
-Par téléphone au <%-landlord.phone1%><%if (landlord.phone2)%> ou au <%-landlord.phone2%>
-Par E-mail à <%-landlord.email%>
+Contactez <%-landlord.contacts[0].name%>
+Par téléphone au <%-landlord.contacts[0].phone1%><%if (landlord.contacts[0].phone2)%> - <%-landlord.contacts[0].phone2%>
+Par E-mail à <%-landlord.contacts[0].email%>
 
 Nous restons à votre disposition pour tout complément d'information.
 
 Cordialement,
 
 <%-landlord.name%>
-<%-landlord.phone1%><%if (landlord.phone2)%> / <%-landlord.phone2%>
-<%-landlord.email%>
+<%-landlord.contacts[0].phone1%><%if (landlord.contacts[0].phone2) {%> / <%-landlord.contacts[0].phone2%> <%}%>
+<%-landlord.contacts[0].email%>

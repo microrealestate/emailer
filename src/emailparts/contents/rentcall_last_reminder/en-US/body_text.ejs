@@ -1,10 +1,15 @@
 <%-landlord.name%>
-<%-landlord.street1%>
-<%if (landlord.street2) {-%>
-<%-landlord.street2%>
+<%-landlord.addresses[0].street1%>
+<%if (landlord.addresses[0].street2) {-%>
+<%-landlord.addresses[0].street2%>
 <%}-%>
-<%-landlord.zipCode%> <%-landlord.city%>
-
+<%-landlord.addresses[0].zipCode%> <%-landlord.addresses[0].city%>
+<%if (landlord.addresses[0].state) {-%>
+<%-landlord.addresses[0].state%>
+<%}-%>
+<%if (landlord.addresses[0].country) {-%>
+<%-landlord.addresses[0].country%>
+<%}-%>
 
 
                                               <%-tenant.name%>
@@ -30,27 +35,33 @@ Payment modalities:
 
 By bank transfer
 Bank details
-<%- landlord.bank %>
-IBAN : <%-landlord.rib%>
+<%- landlord.bankInfo.name %>
+IBAN: <%-landlord.bankInfo.iban%>
 
 By bank cheque
 Write your cheque to the order of <%-landlord.name%> and send it to the following address:
 <%-landlord.name%>
-<%-landlord.street1%>
-<%if (landlord.street2) {-%>
-    <%-landlord.street2%>
+<%-landlord.addresses[0].street1%>
+<%if (landlord.addresses[0].street2) {-%>
+<%-landlord.addresses[0].street2%>
 <%}-%>
-<%-landlord.zipCode%> <%-landlord.city%>
+<%-landlord.addresses[0].zipCode%> <%-landlord.addresses[0].city%>
+<%if (landlord.addresses[0].state) {-%>
+<%-landlord.addresses[0].state%>
+<%}-%>
+<%if (landlord.addresses[0].country) {-%>
+<%-landlord.addresses[0].country%>
+<%}-%>
 
 By cash
-Contact <%-landlord.contact%>
-Phone: <%-landlord.phone1%><%if (landlord.phone2)%> ou au <%-landlord.phone2%>
-Email: <%-landlord.email%>
+Contact: <%-landlord.contacts[0].name%>
+Phone: <%-landlord.contacts[0].phone1%><%if (landlord.contacts[0].phone2)%> - <%-landlord.contacts[0].phone2%>
+Email: <%-landlord.contacts[0].email%>
 
 We are at your service for any further information you may need.
 
 Regards,
 
 <%-landlord.name%>
-<%-landlord.phone1%><%if (landlord.phone2)%> / <%-landlord.phone2%>
-<%-landlord.email%>
+<%-landlord.contacts[0].phone1%><%if (landlord.contacts[0].phone2) {%> / <%-landlord.contacts[0].phone2%> <%}%>
+<%-landlord.contacts[0].email%>

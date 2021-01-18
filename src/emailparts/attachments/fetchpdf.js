@@ -20,7 +20,8 @@ module.exports = (templateName, recordId, params, filename) => {
             axios.get(uri, { responseType: 'stream' })
                 .then(response => {
                     response.data.pipe(wStream);
-                });
+                })
+                .catch(reject);
         } catch (exc) {
             reject(exc);
         }

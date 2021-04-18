@@ -29,18 +29,12 @@ async function exit() {
 const migrate = async () => {
     const emails = await Email.find();
     for (let document of emails) {
-        let email = document.toObject();
-        if (email.tenantId) {
-            email = {
-                templateName: email.document,
-                recordId: email.tenantId,
-                params: { term: email.term },
-                sentTo: email.to,
-                sentDate: email.sentDate
-            };
-            await Email(email).save();
-            await Email.deleteOne({ _id: document._id });
+        const  { _id, ...email } = document.toObject();
+        if (email.params && email.params.term) {
+            email.params.term = Number(email.params.term);
         }
+        await Email(email).save();
+        await Email.deleteOne({ _id: document._id });
     }
 };
 

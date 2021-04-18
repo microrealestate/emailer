@@ -83,8 +83,8 @@ process.on('SIGINT', async () => {
         await startApplication(apiRouter);
         logger.debug(`Rest API listening on port ${config.PORT}`);
         logger.info(`NODE_ENV ${process.env.NODE_ENV}`);
-        logger.info(`Mode productive ${config.PRODUCTIVE}`);
-        logger.info(`Databases ${config.MONGO_URL} / ${config.DEPRECATED_DB_URL}`);
+        logger.info(`ALLOW_EMAIL_SENDING ${config.ALLOW_EMAIL_SENDING}`);
+        logger.info(`Databases ${config.MONGO_URL} ${config.DEPRECATED_DB_URL || ''}`);
         logger.info(`MailGun domain ${config.MAILGUN.domain}`);
         logger.info('Emailer service ready');
     } catch (exc) {

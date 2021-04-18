@@ -40,8 +40,8 @@ Response
 
 Request
 ```
-GET /emailer/status/:recordId?/:params      // recordId,     DB record Id
-                                            // params        extra parameters (ex. { term: 2018030100 })
+GET /emailer/status/:startTerm/:endTerm?    // startTerm   parameters (ex. { term: 2018030100 })
+                                            // endTerm     extra parameters (ex. { term: 2018030100 })
 headers = {
     'Application-Locale', // the application locale: en-US, fr-FR...
 }

@@ -18,17 +18,26 @@ const _sendToMailGun = email => {
     });
 };
 
-const status = async (recordId, params) => {
+const status = async (recordId, startTerm, endTerm) => {
     let query = {};
     if (recordId) {
         query.recordId = recordId;
     }
-    if (params) {
+    if (startTerm && endTerm) {
         query = {
             ...query,
-            params
+            '$and': [
+                { 'params.term': { '$gte': startTerm } },
+                { 'params.term': { '$lte': endTerm } }
+            ]
+        };
+    } else if (startTerm) {
+        query = {
+            ...query,
+            term: startTerm,
         };
     }
+
     return await Email.find(
         query, {
             _id: false,
@@ -112,26 +121,27 @@ const send = async (locale, templateName, recordId, params) => {
         logger.debug(email);
 
         let status;
-        if (config.PRODUCTIVE) {
+        if (config.ALLOW_EMAIL_SENDING) {
             status = await _sendToMailGun(email);
+            new Email({
+                templateName,
+                recordId,                  // tenantId
+                params,
+                sentTo: recipients.to,
+                sentDate: new Date(),
+                emailId: status.id,
+                status: 'queued'
+            }).save();
             logger.info(`${templateName} sent to ${recordId} at ${recipients.to}`);
         } else {
             status = {
                 id: '<devid>',
                 to: email.to,
-                message: 'email not sent dev mode activated'
+                message: 'email not sent, email sending disabled'
             };
-            logger.warn(`DEV MODE ACTIVATED: ${templateName} not sent to ${recordId} at ${recipients.to}`);
+            logger.warn(`EMAIL SENDING DISABLED: ${templateName} not sent to ${recordId} at ${recipients.to}`);
         }
         logger.debug(status);
-
-        new Email({
-            templateName,
-            recordId,
-            params,
-            sentTo: recipients.to,
-            sentDate: new Date()
-        }).save();
 
         return {
             ...result,

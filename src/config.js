@@ -4,6 +4,7 @@ const root_dir = path.join(__dirname, '..');
 module.exports = {
     LOGGER_LEVEL: process.env.LOGGER_LEVEL || 'debug',
     PRODUCTIVE: process.env.NODE_ENV === 'production',
+    ALLOW_EMAIL_SENDING: process.env.NODE_ENV === 'production' || process.env.ALLOW_EMAIL_SENDING === 'true',
     APP_NAME:  process.env.APP_NAME || 'Loca',
     APP_URL:  process.env.APP_URL || 'http://localhost:8080/app',
     PORT: process.env.PORT || 8083,

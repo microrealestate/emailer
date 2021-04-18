@@ -5,7 +5,9 @@ const EmailSchema = mongoose.Schema({
     recordId: String,
     params: {},
     sentTo: String,
-    sentDate: Date
+    sentDate: Date,
+    status: String,
+    emailId: String
 });
 
 module.exports = mongoose.model('Email', EmailSchema);

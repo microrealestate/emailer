@@ -9,11 +9,12 @@ const apiRouter = express.Router();
 apiRouter.use(locale(['fr-FR', 'en-US', 'pt-BR'], 'en-US'));
 
 //     recordId,      // DB record Id
-//     params         // extra parameters (ex. { term: 2018030100 })
-apiRouter.get('/emailer/status/:recordId?/:term', async (req, res) => {
+//     startTerm      // ex. { term: 2018030100 })
+//     endTerm        // ex. { term: 2018040100 })
+apiRouter.get('/emailer/status/:startTerm/:endTerm?', async (req, res) => {
     try {
-        const { recordId, ...params } = req.params;
-        const result = await emailer.status(recordId, params);
+        const { startTerm, endTerm } = req.params;
+        const result = await emailer.status(null, Number(startTerm), endTerm ? Number(endTerm) : null);
         res.json(result);
     } catch(exc) {
         logger.error(exc);
@@ -52,7 +53,11 @@ apiRouter.post('/emailer', async (req, res) => {
                 params
             );
         } catch(error) {
-            return res.sendStatus(500);
+            console.error(error);
+            return res.status(error.statusCode || 500).json({
+                status: error.statusCode || 500,
+                message: error.message
+            });
         }
 
         if (!results || !results.length) {

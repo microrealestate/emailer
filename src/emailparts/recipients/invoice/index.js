@@ -12,7 +12,7 @@ module.exports = {
         }
 
         const fromEmail = data.landlord.thirdParties.mailgun.fromEmail;
-        const replyToEmail = data.landlord.thirdParties.mailgun.replyEmail;
+        const replyToEmail = data.landlord.thirdParties.mailgun.replyToEmail;
 
         const recipientsList =  data.tenant.contacts
             .filter(contact => contact.email)
@@ -29,7 +29,7 @@ module.exports = {
                     recipients = {
                         ...recipients,
                         bcc: data.landlord.members
-                            .filter(({ email, registered }) => registered && email !== landlordEmail)
+                            .filter(({ email, registered }) => registered && email !== fromEmail)
                             .map(({ email }) => email)
                             .join(',')
                     };

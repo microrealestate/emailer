@@ -19,5 +19,7 @@ module.exports = {
         FROM: process.env.EMAIL_FROM || 'Example <noreply@example.com>',
         REPLY_TO: process.env.EMAIL_REPLY_TO || 'customer-service@example.com',
         BCC: process.env.EMAIL_BCC || 'manager1@example.com,manager2@example.com'
-    }
+    },
+    CIPHER_KEY: process.env.CIPHER_KEY || 'cipher_key_secret',
+    CIPHER_IV_KEY: process.env.CIPHER_IV_KEY || 'cipher_iv_key_secret'
 };

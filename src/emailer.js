@@ -1,22 +1,11 @@
 const logger = require('winston');
 const config = require('./config');
-const mailgun = require('mailgun-js')(config.MAILGUN);
 const Email = require('./model/email');
 const emailData = require('./emaildata');
 const emailRecipients = require('./emailrecipients');
 const emailContent = require('./emailcontent');
 const emailAttachments = require('./emailattachments');
-
-const _sendToMailGun = email => {
-    return new Promise((resolve, reject) => {
-        mailgun.messages().send(email, function (error, body) {
-            if (error) {
-                return reject(error);
-            }
-            resolve(body);
-        });
-    });
-};
+const emailEngine = require('./emailengine');
 
 const status = async (recordId, startTerm, endTerm) => {
     let query = {};
@@ -122,7 +111,7 @@ const send = async (locale, templateName, recordId, params) => {
 
         let status;
         if (config.ALLOW_EMAIL_SENDING) {
-            status = await _sendToMailGun(email);
+            status = await emailEngine.sendEmail(email, data);
             new Email({
                 templateName,
                 recordId,                  // tenantId

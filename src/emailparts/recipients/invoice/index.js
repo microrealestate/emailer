@@ -6,11 +6,13 @@ module.exports = {
             throw new Error('tenant has not any contact emails');
         }
 
-        if (!data.landlord.contacts[0].email) {
-            throw new Error('landlord has not defined any contact emails');
+        if (!data.landlord.thirdParties ||
+            !data.landlord.thirdParties.mailgun) {
+            throw new Error('landlord has not set the mailgun configuration');
         }
 
-        const landlordEmail = data.landlord.contacts[0].email.toLowerCase();
+        const fromEmail = data.landlord.thirdParties.mailgun.fromEmail;
+        const replyToEmail = data.landlord.thirdParties.mailgun.replyEmail;
 
         const recipientsList =  data.tenant.contacts
             .filter(contact => contact.email)
@@ -19,9 +21,9 @@ module.exports = {
                     return acc;
                 }
                 let recipients = {
-                    from: landlordEmail,
+                    from: fromEmail,
                     to: email.toLowerCase(),
-                    'h:Reply-To': landlordEmail
+                    'h:Reply-To': replyToEmail
                 };
                 if (config.PRODUCTIVE && data.landlord.members.length) {
                     recipients = {

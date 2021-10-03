@@ -4,12 +4,21 @@ const i18n = require('../locale');
 const fetchPDF = require('../fetchpdf');
 
 module.exports = {
-    get: async (locale, recordId, params, { tenant }) => {
-        const billingRef = `${moment(params.term, 'YYYYMMDDHH').locale(locale).format('MM_YY')}_${tenant.reference}`;
-        const filename = `${i18n(locale)['short_rentcall_reminder']}-${tenant.name}-${billingRef}`;
-        const filePath = await fetchPDF('rentcall_reminder', recordId, params, filename);
-        return {
-            attachment: [ fs.createReadStream(filePath) ]
-        };
-    }
+  get: async (locale, recordId, params, { tenant }) => {
+    const billingRef = `${moment(params.term, 'YYYYMMDDHH')
+      .locale(locale)
+      .format('MM_YY')}_${tenant.reference}`;
+    const filename = `${i18n(locale)['short_rentcall_reminder']}-${
+      tenant.name
+    }-${billingRef}`;
+    const filePath = await fetchPDF(
+      'rentcall_reminder',
+      recordId,
+      params,
+      filename
+    );
+    return {
+      attachment: [fs.createReadStream(filePath)],
+    };
+  },
 };

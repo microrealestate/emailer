@@ -9,14 +9,18 @@ const bufferedIV = Buffer.allocUnsafe(16);
 iv.copy(bufferedIV);
 
 function decrypt(encryptedText) {
-    const hashedKey = crypto.createHash('sha256').update(key).digest();
-    const decipher = crypto.createDecipheriv('aes-256-cbc', hashedKey, bufferedIV);
-    return [
-        decipher.update(encryptedText, 'hex', 'binary'),
-        decipher.final('binary')
-    ].join('');
+  const hashedKey = crypto.createHash('sha256').update(key).digest();
+  const decipher = crypto.createDecipheriv(
+    'aes-256-cbc',
+    hashedKey,
+    bufferedIV
+  );
+  return [
+    decipher.update(encryptedText, 'hex', 'binary'),
+    decipher.final('binary'),
+  ].join('');
 }
 
 module.exports = {
-    decrypt
+  decrypt,
 };

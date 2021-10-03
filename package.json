@@ -6,7 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./src/index.js",
-    "dev": "nodemon -w src --inspect=0.0.0.0:9228 ./src/index.js"
+    "dev": "nodemon -w src --inspect=0.0.0.0:9228 ./src/index.js",
+    "lint": "eslint ./ --ext js",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "repository": {
     "type": "git",
@@ -36,7 +41,10 @@
     "winston": "2.4.4"
   },
   "devDependencies": {
-    "eslint": "6.8.0",
-    "nodemon": "2.0.3"
+    "eslint": "7.32.0",
+    "husky": "6.0.0",
+    "lint-staged": "11.0.0",
+    "nodemon": "2.0.3",
+    "prettier": "2.3.0"
   }
 }

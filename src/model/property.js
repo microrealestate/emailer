@@ -4,20 +4,33 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const PropertySchema = mongoose.Schema({
   realmId: { type: ObjectId, ref: 'Realm' },
+  //occupant: ObjectId,
+  //occupantLabel: String,
 
-  name: String,
-  location: String,
-  phone: String,
   type: String,
-  building: String,
-  level: String,
-
+  name: String,
+  description: String,
   surface: Number,
-  expense: Number,
+  phone: String,
+  digicode: String,
+  address: {
+    street1: String,
+    street2: String,
+    zipCode: String,
+    city: String,
+    state: String,
+    country: String,
+  },
+
   price: Number,
 
-  occupant: ObjectId,
-  occupantLabel: String,
+  // TODO moved in Occupant.properties model
+  expense: Number,
+
+  // TODO to remove, replaced by address
+  building: String,
+  level: String,
+  location: String,
 });
 
 module.exports = mongoose.model('Property', PropertySchema);

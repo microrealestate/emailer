@@ -6,7 +6,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const TenantSchema = mongoose.Schema({
   // Organization
-  realmId: { type: ObjectId, ref: Realm },
+  realmId: { type: String, ref: Realm },
 
   // individual details
   name: String,

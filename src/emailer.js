@@ -137,7 +137,7 @@ const send = async (locale, templateName, recordId, params) => {
       logger.debug(email);
 
       let status;
-      if (config.ALLOW_EMAIL_SENDING) {
+      if (config.ALLOW_SENDING_EMAILS) {
         status = await emailEngine.sendEmail(email, data);
         new Email({
           templateName,

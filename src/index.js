@@ -87,7 +87,7 @@ process.on('SIGINT', async () => {
     await startApplication(apiRouter);
     logger.debug(`Rest API listening on port ${config.PORT}`);
     logger.info(`NODE_ENV ${process.env.NODE_ENV}`);
-    logger.info(`ALLOW_EMAIL_SENDING ${config.ALLOW_EMAIL_SENDING}`);
+    logger.info(`ALLOW_SENDING_EMAILS ${config.ALLOW_SENDING_EMAILS}`);
     logger.info(
       `Databases ${config.MONGO_URL} ${config.DEPRECATED_DB_URL || ''}`
     );

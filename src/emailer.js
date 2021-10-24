@@ -8,21 +8,17 @@ const emailAttachments = require('./emailattachments');
 const emailEngine = require('./emailengine');
 
 const status = async (recordId, startTerm, endTerm) => {
-  let query = {};
+  const query = {};
   if (recordId) {
     query.recordId = recordId;
   }
   if (startTerm && endTerm) {
-    query = {
-      ...query,
-      $and: [
-        { 'params.term': { $gte: startTerm } },
-        { 'params.term': { $lte: endTerm } },
-      ],
-    };
+    query.$and = [
+      { 'params.term': { $gte: startTerm } },
+      { 'params.term': { $lte: endTerm } },
+    ];
   } else if (startTerm) {
-    query = {
-      ...query,
+    query.params = {
       term: startTerm,
     };
   }

@@ -7,7 +7,7 @@ const config = require('../../config');
 module.exports = (templateName, recordId, params, filename) => {
   return new Promise((resolve, reject) => {
     try {
-      const uri = `${config.PDFGENERATOR_URL}/${templateName}/${recordId}/${params.term}`;
+      const uri = `${config.PDFGENERATOR_URL}/documents/${templateName}/${recordId}/${params.term}`;
       const fileDir = path.join(config.TEMPORARY_DIRECTORY, templateName);
       if (!fs.existsSync(fileDir)) {
         fs.mkdirSync(fileDir);

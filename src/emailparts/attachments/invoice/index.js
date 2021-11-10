@@ -4,14 +4,28 @@ const i18n = require('../locale');
 const fetchPDF = require('../fetchpdf');
 
 module.exports = {
-  get: async (locale, recordId, params, { tenant }) => {
+  get: async (
+    authorizationHeader,
+    locale,
+    organizationId,
+    recordId,
+    params,
+    { tenant }
+  ) => {
     const billingRef = `${moment(params.term, 'YYYYMMDDHH')
       .locale(locale)
       .format('MM_YY')}_${tenant.reference}`;
     const filename = `${i18n(locale)['short_invoice']}-${
       tenant.name
     }-${billingRef}`;
-    const filePath = await fetchPDF('invoice', recordId, params, filename);
+    const filePath = await fetchPDF(
+      authorizationHeader,
+      organizationId,
+      'invoice',
+      recordId,
+      params,
+      filename
+    );
     return {
       attachment: [fs.createReadStream(filePath)],
     };

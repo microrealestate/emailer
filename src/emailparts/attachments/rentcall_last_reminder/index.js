@@ -4,7 +4,14 @@ const i18n = require('../locale');
 const fetchPDF = require('../fetchpdf');
 
 module.exports = {
-  get: async (locale, recordId, params, { tenant }) => {
+  get: async (
+    authorizationHeader,
+    locale,
+    organizationId,
+    recordId,
+    params,
+    { tenant }
+  ) => {
     const billingRef = `${moment(params.term, 'YYYYMMDDHH')
       .locale(locale)
       .format('MM_YY')}_${tenant.reference}`;
@@ -12,6 +19,8 @@ module.exports = {
       tenant.name
     }-${billingRef}`;
     const filePath = await fetchPDF(
+      authorizationHeader,
+      organizationId,
       'rentcall_last_reminder',
       recordId,
       params,

@@ -37,7 +37,14 @@ const status = async (recordId, startTerm, endTerm) => {
   );
 };
 
-const send = async (locale, templateName, recordId, params) => {
+const send = async (
+  authorizationHeader, // Bearer accessToken
+  locale,
+  organizationId,
+  templateName,
+  recordId,
+  params
+) => {
   const result = {
     templateName,
     recordId,
@@ -85,7 +92,9 @@ const send = async (locale, templateName, recordId, params) => {
   logger.debug(recipientsList);
 
   const attachments = await emailAttachments.build(
+    authorizationHeader,
     locale,
+    organizationId,
     templateName,
     recordId,
     params,
@@ -152,7 +161,7 @@ const send = async (locale, templateName, recordId, params) => {
           message: 'email not sent, email sending disabled',
         };
         logger.warn(
-          `EMAIL SENDING DISABLED: ${templateName} not sent to ${recordId} at ${recipients.to}`
+          `ALLOW_SENDING_EMAILS DISABLED: ${templateName} not sent to ${recordId} at ${recipients.to}`
         );
       }
       logger.debug(status);

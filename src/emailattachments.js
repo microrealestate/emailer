@@ -2,7 +2,15 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = {
-  build: async (locale, templateName, recordId, params, data) => {
+  build: async (
+    authorizationHeader,
+    locale,
+    organizationId,
+    templateName,
+    recordId,
+    params,
+    data
+  ) => {
     const attachmentsPackagePath = path.join(
       __dirname,
       'emailparts',
@@ -16,6 +24,13 @@ module.exports = {
     }
 
     const attachments = require(attachmentsPackagePath);
-    return await attachments.get(locale, recordId, params, data);
+    return await attachments.get(
+      authorizationHeader,
+      locale,
+      organizationId,
+      recordId,
+      params,
+      data
+    );
   },
 };

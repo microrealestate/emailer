@@ -18,41 +18,37 @@ const _send = async (req, res) => {
             'rentcall_reminder',
           ];
     if (!allowedTemplates.includes(templateName)) {
+      logger.warn(`template not found ${templateName}`);
       return res.sendStatus(404);
     }
 
-    let results = [];
-    try {
-      results = await emailer.send(
-        req.headers.authorization,
-        req.rawLocale.code,
-        req.headers.organizationid,
-        templateName,
-        recordId,
-        params
-      );
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({
-        status: 500,
-        message: error.message,
-      });
-    }
+    const results = await emailer.send(
+      req.headers.authorization,
+      req.rawLocale.code,
+      req.headers.organizationid,
+      templateName,
+      recordId,
+      params
+    );
 
     if (!results || !results.length) {
+      logger.warn(
+        `no results returned by the email engine after sending the email ${templateName}`
+      );
       return res.sendStatus(404);
     }
 
     if (results.length === 1 && results[0].error) {
+      logger.error(results);
       return res.status(results[0].error.status).json(results[0].error);
     }
 
     res.json(results);
-  } catch (exc) {
-    logger.error(exc);
+  } catch (error) {
+    logger.error(error);
     res.status(500).json({
       status: 500,
-      message: exc.message,
+      message: 'unexpected error occured when sending the email',
     });
   }
 };
@@ -75,11 +71,11 @@ apiRouter.get('/emailer/status/:startTerm/:endTerm?', async (req, res) => {
       endTerm ? Number(endTerm) : null
     );
     res.json(result);
-  } catch (exc) {
-    logger.error(exc);
+  } catch (error) {
+    logger.error(error);
     res.status(500).send({
       status: 500,
-      message: exc.message,
+      message: error.message,
     });
   }
 });

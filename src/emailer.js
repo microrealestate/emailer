@@ -53,6 +53,7 @@ const send = async (
 
   let data;
   try {
+    logger.debug('fetch email data');
     data = await emailData.build(locale, templateName, recordId, params);
   } catch (error) {
     logger.error(error);
@@ -61,7 +62,7 @@ const send = async (
         ...result,
         error: {
           status: 404,
-          message: error,
+          message: `no data found for ${templateName} recordId: ${recordId}`,
         },
       },
     ];
@@ -70,6 +71,7 @@ const send = async (
 
   let recipientsList;
   try {
+    logger.debug('get email recipients');
     recipientsList = await emailRecipients.build(
       locale,
       templateName,
@@ -84,24 +86,41 @@ const send = async (
         ...result,
         error: {
           status: 422,
-          message: error,
+          message: `cannot get recipients for ${templateName}`,
         },
       },
     ];
   }
   logger.debug(recipientsList);
 
-  const attachments = await emailAttachments.build(
-    authorizationHeader,
-    locale,
-    organizationId,
-    templateName,
-    recordId,
-    params,
-    data
-  );
+  let attachments;
+  try {
+    logger.debug('add email attachments');
+    attachments = await emailAttachments.build(
+      authorizationHeader,
+      locale,
+      organizationId,
+      templateName,
+      recordId,
+      params,
+      data
+    );
+  } catch (error) {
+    logger.error(error);
+    return [
+      {
+        ...result,
+        error: {
+          status: 404,
+          message: `cannot add attachments for ${templateName}`,
+        },
+      },
+    ];
+  }
+
   let content;
   try {
+    logger.debug('get email content');
     content = await emailContent.build(
       locale,
       templateName,
@@ -116,7 +135,7 @@ const send = async (
         ...result,
         error: {
           status: 422,
-          message: error,
+          message: `cannot get email content for ${templateName}`,
         },
       },
     ];

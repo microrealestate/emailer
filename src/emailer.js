@@ -174,14 +174,13 @@ const send = async (
         }).save();
         logger.info(`${templateName} sent to ${recordId} at ${recipients.to}`);
       } else {
+        const message = `ALLOW_SENDING_EMAILS set to "false", ${templateName} not sent to ${recordId} at ${recipients.to}`;
         status = {
           id: '<devid>',
           to: email.to,
-          message: 'email not sent, email sending disabled',
+          message,
         };
-        logger.warn(
-          `ALLOW_SENDING_EMAILS DISABLED: ${templateName} not sent to ${recordId} at ${recipients.to}`
-        );
+        logger.warn(message);
       }
       logger.debug(status);
 

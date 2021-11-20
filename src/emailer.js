@@ -37,9 +37,11 @@ const status = async (recordId, startTerm, endTerm) => {
   );
 };
 
+// TODO: pass some args in params
 const send = async (
   authorizationHeader, // Bearer accessToken
   locale,
+  currency,
   organizationId,
   templateName,
   recordId,
@@ -54,7 +56,7 @@ const send = async (
   let data;
   try {
     logger.debug('fetch email data');
-    data = await emailData.build(locale, templateName, recordId, params);
+    data = await emailData.build(templateName, recordId, params);
   } catch (error) {
     logger.error(error);
     return [
@@ -123,6 +125,7 @@ const send = async (
     logger.debug('get email content');
     content = await emailContent.build(
       locale,
+      currency,
       templateName,
       recordId,
       params,

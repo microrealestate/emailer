@@ -2,9 +2,9 @@ const moment = require('moment');
 const invoice = require('../invoice');
 
 module.exports = {
-  get: async (locale, tenantId, params) => {
-    const momentTerm = moment(params.term, 'YYYYMMDDHH').locale(locale);
-    const momentToday = moment().locale(locale);
+  get: async (tenantId, params) => {
+    const momentTerm = moment(params.term, 'YYYYMMDDHH');
+    const momentToday = moment();
     const dueDate = moment(momentTerm).add(10, 'days');
     const dueDay = dueDate.isoWeekday();
 
@@ -26,22 +26,18 @@ module.exports = {
       billingDay = today;
     }
 
-    const { landlord, tenant, period } = await invoice.get(
-      locale,
-      tenantId,
-      params
-    );
+    const { landlord, tenant, period } = await invoice.get(tenantId, params);
 
     // data that will be injected in the email content files (ejs files)
     return {
       landlord,
       tenant,
       period,
-      today: billingDay.format('LL'),
-      billingRef: `${moment(params.term, 'YYYYMMDDHH')
-        .locale(locale)
-        .format('MM_YY')}_${tenant.reference}`,
-      dueDate: dueDate.format('LL'),
+      today: billingDay.format('DD/MM/YYYY'),
+      billingRef: `${moment(params.term, 'YYYYMMDDHH').format('MM_YY')}_${
+        tenant.reference
+      }`,
+      dueDate: dueDate.format('DD/MM/YYYY'),
     };
   },
 };

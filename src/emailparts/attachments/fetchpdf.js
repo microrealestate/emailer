@@ -20,7 +20,6 @@ module.exports = (
   const filePath = path.join(fileDir, `${filename}.pdf`);
   const wStream = fs.createWriteStream(filePath);
 
-  logger.debug(`GET document ${uri}`);
   return axios
     .get(uri, {
       responseType: 'stream',

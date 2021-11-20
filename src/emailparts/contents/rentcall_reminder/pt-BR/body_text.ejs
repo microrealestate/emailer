@@ -1,4 +1,5 @@
 <%-landlord.name%>
+<% if (landlord.hasAddress) { -%>
 <%-landlord.addresses[0].street1%>
 <%if (landlord.addresses[0].street2) {-%>
 <%-landlord.addresses[0].street2%>
@@ -9,6 +10,7 @@
 <%}-%>
 <%if (landlord.addresses[0].country) {-%>
 <%-landlord.addresses[0].country%>
+<%}-%>
 <%}-%>
 
 
@@ -23,20 +25,23 @@
 
 Hello,
 
-On examining your account, we note that, failing mistake or omission on our part, you have not settled your rent of <%- period %>.
+On examining your account, we note that, failing mistake or omission on our part, you have not settled your rent of <%- _.formatTerm(period, tenant.contract.lease.timeRange) %>.
 
-We would be grateful if you could proceed to the payment of €<%- tenant.rents[0].total.grandTotal.toFixed(2) %> very shortly.
+We would be grateful if you could proceed to the payment of <%- _.formatNumber(tenant.rents[0].total.grandTotal, 'currency') %> very shortly.
 
 Payment modalities:
 
 By transfer
 Bank details
+<% if (landlord.hasBankInfo) { -%>
 <%- landlord.bankInfo.name %>
 IBAN: <%-landlord.bankInfo.iban%>
+<%}-%>
 
-By bank cheque
+By cheque
 Write your cheque to the order of <%-landlord.name%> and send it to the following address:
 <%-landlord.name%>
+<% if (landlord.hasAddress) { -%>
 <%-landlord.addresses[0].street1%>
 <%if (landlord.addresses[0].street2) {-%>
 <%-landlord.addresses[0].street2%>
@@ -48,16 +53,19 @@ Write your cheque to the order of <%-landlord.name%> and send it to the followin
 <%if (landlord.addresses[0].country) {-%>
 <%-landlord.addresses[0].country%>
 <%}-%>
+<%}-%>
 
 By cash
-Contact: <%-landlord.contacts[0].name%>
-Phone: <%-landlord.contacts[0].phone1%><%if (landlord.contacts[0].phone2)%> - <%-landlord.contacts[0].phone2%>
-Email: <%-landlord.contacts[0].email%>
+Contact: <%-landlord.hasContact ? landlord.contacts[0].name : ''%>
+Phone: <%-landlord.hasContact ? landlord.contacts[0].phone1 : ''%><% landlord.hasContact && landlord.contacts[0].phone2 ? ' / ' + landlord.contacts[0].phone2 : '' %>
+Email: <%-landlord.hasContact ? landlord.contacts[0].email : ''%>
 
 We are at your service for any further information you may need.
 
 Regards,
 
 <%-landlord.name%>
+<% if (landlord.hasContact) { -%>
 <%-landlord.contacts[0].phone1%><%if (landlord.contacts[0].phone2) {%> / <%-landlord.contacts[0].phone2%> <%}%>
 <%-landlord.contacts[0].email%>
+<%}-%>

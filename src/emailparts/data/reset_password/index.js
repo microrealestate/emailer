@@ -1,7 +1,7 @@
 const Account = require('../../../model/account');
 
 module.exports = {
-  get: async (locale, email, params) => {
+  get: async (email, params) => {
     const dbAccount = await Account.findOne({ email });
     if (!dbAccount) {
       throw new Error('user not found');

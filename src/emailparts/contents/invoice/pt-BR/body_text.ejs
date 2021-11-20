@@ -13,6 +13,7 @@
 <%}-%>
 <%}-%>
 
+
                                               <%-tenant.name%>
                                               <%-tenant.street1%>
 <%if (tenant.street2) {-%>
@@ -22,17 +23,15 @@
 
 
 
-Bonjour,
+Hello,
 
-Nous vous remercions pour le règlement de votre loyer.
+Thank you for your settlement.
 
-Veuillez trouver ci-joint la quittance du mois de <%- _.formatTerm(period, tenant.contract.lease.timeRange) %>.
+Please find in attachment the rent invoice of <%- _.formatTerm(period, tenant.contract.lease.timeRange) %>.
 
-En vous souhaitant bonne récéption.
+Kind regards,
 
-Cordialement,
-
-<%-landlord.name%>
+<%-landlord.name %>
 <% if (landlord.hasContact) { -%>
 <%-landlord.contacts[0].phone1%><%if (landlord.contacts[0].phone2) {%> / <%-landlord.contacts[0].phone2%> <%}%>
 <%-landlord.contacts[0].email%>

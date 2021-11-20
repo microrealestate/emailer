@@ -1,7 +1,7 @@
 const express = require('express');
 const locale = require('locale');
 const logger = require('winston');
-const { needAccessToken } = require('./utils/middlewares');
+const { needAccessToken, checkOrganization } = require('./utils/middlewares');
 const emailer = require('./emailer');
 const config = require('./config');
 
@@ -22,10 +22,12 @@ const _send = async (req, res) => {
       return res.sendStatus(404);
     }
 
+    // TODO: pass headers in params
     const results = await emailer.send(
       req.headers.authorization,
-      req.rawLocale.code,
-      req.headers.organizationid,
+      req.realm?.locale || req.rawLocale.code,
+      req.realm?.currency || '',
+      req.realm?._id || req.headers.organizationid,
       templateName,
       recordId,
       params
@@ -55,9 +57,10 @@ const _send = async (req, res) => {
 
 const apiRouter = express.Router();
 // parse locale
-apiRouter.use(locale(['fr-FR', 'en-US', 'pt-BR'], 'en-US'));
+apiRouter.use(locale(['fr-FR', 'en', 'pt-BR'], 'en')); // used when organization is not set
 apiRouter.post('/emailer/resetpassword', _send); // allow this route even there is no access token
 apiRouter.use(needAccessToken(config.ACCESS_TOKEN_SECRET));
+apiRouter.use(checkOrganization());
 
 //     recordId,      // DB record Id
 //     startTerm      // ex. { term: 2018030100 })

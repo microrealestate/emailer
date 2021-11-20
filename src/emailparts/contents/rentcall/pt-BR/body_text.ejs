@@ -23,23 +23,22 @@
 
 
 
-Bonjour,
+Hello,
 
-Sauf erreur de notre part, nous vous informons que nous sommes toujours en attente du règlement de votre loyer du mois de <%- _.formatTerm(period, tenant.contract.lease.timeRange) %>.
+Please find the rent notice of <%- _.formatTerm(period, tenant.contract.lease.timeRange) %>.
 
-Nous vous remercions de bien vouloir procéder au paiement de la somme de <%- _.formatNumber(tenant.rents[0].total.grandTotal, 'currency') %> dans les plus brefs delais.
+The amount of your rent is <%- _.formatNumber(tenant.rents[0].total.grandTotal, 'currency') %> and the settlement has to be made before <%- _.formatDate(dueDate, 'LL') %>.
 
-Ci-dessous les modalités de paiement :
+Payment modalities:
 
-Par virement bancaire
-Nos coordonnées bancaires
+By transfer
+Bank details
 <% if (landlord.hasBankInfo) { -%>
 <%- landlord.bankInfo.name %>
-IBAN : <%-landlord.bankInfo.iban%>
+IBAN: <%-landlord.bankInfo.iban%>
 <%}-%>
-
-Par chèque bancaire ou postal
-Etablissez votre chèque à l'ordre de <%-landlord.name%> et à envoyer à l'adresse suivante :
+By cheque
+Write your cheque to the order of <%-landlord.name%> and send it to the following address:
 <%-landlord.name%>
 <% if (landlord.hasAddress) { -%>
 <%-landlord.addresses[0].street1%>
@@ -54,15 +53,14 @@ Etablissez votre chèque à l'ordre de <%-landlord.name%> et à envoyer à l'adr
 <%-landlord.addresses[0].country%>
 <%}-%>
 <%}-%>
+By cash
+Contact: <%-landlord.hasContact ? landlord.contacts[0].name : ''%>
+Phone: <%-landlord.hasContact ? landlord.contacts[0].phone1 : ''%><% landlord.hasContact && landlord.contacts[0].phone2 ? ' / ' + landlord.contacts[0].phone2 : '' %>
+Email: <%-landlord.hasContact ? landlord.contacts[0].email : ''%>
 
-Par espèce
-Contactez <%-landlord.hasContact ? landlord.contacts[0].name : ''%>
-Par téléphone au <%-landlord.hasContact ? landlord.contacts[0].phone1 : ''%><% landlord.hasContact && landlord.contacts[0].phone2 ? ' / ' + landlord.contacts[0].phone2 : '' %>
-Par E-mail à <%-landlord.hasContact ? landlord.contacts[0].email : ''%>
+We are at your service for any further information you may need.
 
-Nous restons à votre disposition pour tout complément d'information.
-
-Cordialement,
+Regards,
 
 <%-landlord.name%>
 <% if (landlord.hasContact) { -%>

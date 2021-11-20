@@ -7,15 +7,9 @@ const config = require('./config');
 const db = require('./model');
 const apiRouter = require('./apirouter');
 
-const startApplication = async (apiRouter) => {
-  // configure default logger
-  logger.remove(logger.transports.Console);
-  logger.add(logger.transports.Console, {
-    level: config.LOGGER_LEVEL,
-    colorize: true,
-  });
-  logger.debug('starting service...');
+require('./utils/httpinterceptors')();
 
+const startApplication = async (apiRouter) => {
   if (!fs.existsSync(config.TEMPORARY_DIRECTORY)) {
     fs.mkdirSync(config.TEMPORARY_DIRECTORY);
   }
@@ -73,10 +67,19 @@ process.on('SIGINT', async () => {
 });
 
 (async () => {
+  // configure default logger
+  logger.remove(logger.transports.Console);
+  logger.add(logger.transports.Console, {
+    level: config.LOGGER_LEVEL,
+    colorize: true,
+  });
+
+  logger.debug('starting service...');
+
   // Connect to Mongo
   try {
     await db.start();
-    await db.migrate();
+    //await db.migrate();
   } catch (exc) {
     logger.error(exc);
     process.exit(1);

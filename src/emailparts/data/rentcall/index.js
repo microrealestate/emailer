@@ -1,32 +1,43 @@
 const moment = require('moment');
 const invoice = require('../invoice');
 
+const _avoidWeekend = (aMoment) => {
+  const day = aMoment.isoWeekday();
+  if (day === 6) {
+    // if saturday shift the due date to friday
+    aMoment.subtract(1, 'days');
+  } else if (day === 7) {
+    // if sunday shift the due date to monday
+    aMoment.add(1, 'days');
+  }
+  return aMoment;
+};
+
 module.exports = {
   get: async (tenantId, params) => {
     const momentTerm = moment(params.term, 'YYYYMMDDHH');
     const momentToday = moment();
-    const dueDate = moment(momentTerm).add(10, 'days');
-    const dueDay = dueDate.isoWeekday();
 
-    if (dueDay === 6) {
-      dueDate.subtract(1, 'days');
-    } else if (dueDay === 7) {
-      dueDate.add(1, 'days');
+    const { landlord, tenant, period } = await invoice.get(tenantId, params);
+    const beginDate = moment(tenant.contract.beginDate, 'DD/MM/YYYY');
+
+    let dueDate = moment(momentTerm);
+    if (tenant.contract.lease.timeRange === 'years') {
+      dueDate.add(1, 'months');
+    } else if (tenant.contract.lease.timeRange === 'months') {
+      dueDate.add(10, 'days');
+    } else if (tenant.contract.lease.timeRange === 'weeks') {
+      dueDate.add(2, 'days');
+    }
+    _avoidWeekend(dueDate);
+    if (dueDate.isBefore(beginDate)) {
+      dueDate = moment(beginDate);
     }
 
     let billingDay = momentToday;
     if (dueDate.isSameOrBefore(momentToday)) {
-      const today = moment(momentTerm);
-      const day = today.isoWeekday();
-      if (day === 6) {
-        today.subtract(1, 'days');
-      } else if (day === 7) {
-        today.add(1, 'days');
-      }
-      billingDay = today;
+      billingDay = _avoidWeekend(moment(momentTerm));
     }
-
-    const { landlord, tenant, period } = await invoice.get(tenantId, params);
 
     // data that will be injected in the email content files (ejs files)
     return {
